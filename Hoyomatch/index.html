@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HoyoMatch | Astral Paths & Elemental Codex</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP HUD BAR WITH LOCAL IMAGE MENU TILES -->
+  <header>
+    <div class="brand-wrapper">
+      <div class="brand-badge">HUD v1.0</div>
+      <div class="brand-title">Hoyo<span>Match</span></div>
+    </div>
+
+    <nav>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="index.html" class="active">
+            <img class="nav-thumb" src="images/nav-home.png" alt="Home">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 01</span>
+              <span class="nav-name">Command</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="quiz.html">
+            <img class="nav-thumb" src="images/nav-quiz.png" alt="Quiz">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 02</span>
+              <span class="nav-name">Assessment</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="codex.html">
+            <img class="nav-thumb" src="images/nav-roster.png" alt="Codex">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 03</span>
+              <span class="nav-name">Codex</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="feedback.html">
+            <img class="nav-thumb" src="images/nav-feedback.png" alt="Feedback">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 04</span>
+              <span class="nav-name">Terminal Log</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-viewport">
+    
+    <!-- ASYMMETRIC HERO SECTION -->
+    <section class="asymmetric-hero">
+      <div class="hero-content">
+        <span class="hero-tagline">Resonance Synchronizer</span>
+        <h1 class="hero-title">Find Your Path & Element</h1>
+        <p class="hero-desc">
+          Test your operational philosophy and emotional temperament. Determine which cosmic Aeon Path guides your tactics, and which primal element of Teyvat commands your resonance.
+        </p>
+        <div class="cta-group">
+          <a href="quiz.html" class="btn-tactical">Begin Assessment</a>
+          <a href="codex.html" class="btn-outline">Browse Codex</a>
+        </div>
+      </div>
+
+      <!-- RADAR HUD CARD -->
+      <div class="hero-radar-panel">
+        <div class="radar-header">
+          <span>COGNITIVE MATRIX</span>
+          <span>CALIBRATED</span>
+        </div>
+        <div class="radar-stats">
+          <div>
+            <div class="stat-row">
+              <span>Cosmic Path Alignment (HSR)</span>
+              <span>78%</span>
+            </div>
+            <div class="stat-bar"><div class="stat-fill" style="width: 78%; background: var(--hsr-color);"></div></div>
+          </div>
+          <div>
+            <div class="stat-row">
+              <span>Elemental Resonance (Genshin)</span>
+              <span>65%</span>
+            </div>
+            <div class="stat-bar"><div class="stat-fill" style="width: 65%; background: var(--genshin-color);"></div></div>
+          </div>
+          <div>
+            <div class="stat-row">
+              <span>Synchrony Index</span>
+              <span>92%</span>
+            </div>
+            <div class="stat-bar"><div class="stat-fill" style="width: 92%; background: var(--hsr-gold);"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DUAL SECTOR SELECTOR -->
+    <section>
+      <h2 class="section-headline">Select Operational Sector</h2>
+      
+      <div class="sector-container">
+        
+        <!-- HONKAI: STAR RAIL GATEWAY -->
+        <a href="codex.html?game=hsr" class="game-sector-card sector-hsr">
+          <div class="sector-indicator">Sector 01</div>
+          <div class="sector-details">
+            <span class="sector-system">Cosmic Philosophy &bull; Aeon Principles</span>
+            <h3 class="sector-title">Honkai: Star Rail Paths</h3>
+            <p class="sector-desc">Explore the 7 foundational Paths: Destruction, The Hunt, Erudition, Harmony, Nihility, Preservation, and Abundance.</p>
+          </div>
+          <div class="sector-action">
+            <span class="action-tag">Explore Paths &rarr;</span>
+          </div>
+        </a>
+
+        <!-- GENSHIN IMPACT GATEWAY -->
+        <a href="codex.html?game=genshin" class="game-sector-card sector-genshin">
+          <div class="sector-indicator">Sector 02</div>
+          <div class="sector-details">
+            <span class="sector-system">Teyvat Natural Forces &bull; Primal Elements</span>
+            <h3 class="sector-title">Genshin Impact Elements</h3>
+            <p class="sector-desc">Analyze the 7 reactive elements of Teyvat: Pyro, Hydro, Anemo, Electro, Dendro, Cryo, and Geo.</p>
+          </div>
+          <div class="sector-action">
+            <span class="action-tag">Explore Elements &rarr;</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 HoyoMatch &bull; Neural Calibration Project</p>
+  </footer>
+
+</body>
+</html>
