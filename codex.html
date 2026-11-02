@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HoyoMatch | Astral Paths &amp; Elemental Codex</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Google Font for Genshin's Fantasy Feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&amp;display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================
+       DYNAMIC ROOT THEME DEFINITIONS
+       ========================================= */
+    body {
+      transition: background 0.5s ease, color 0.3s ease;
+    }
+
+    /* 1. HSR COSMIC SPACE THEME */
+    body.theme-hsr {
+      background-color: #04060E;
+      background-image: 
+        radial-gradient(circle at 85% 15%, rgba(0, 229, 255, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 15% 80%, rgba(93, 63, 211, 0.14) 0%, transparent 50%),
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    /* 2. GENSHIN FANTASY ARCHON THEME */
+    body.theme-genshin {
+      background-color: #0B0E14;
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(232, 194, 82, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 10% 90%, rgba(81, 229, 194, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 90% 70%, rgba(192, 121, 255, 0.07) 0%, transparent 45%);
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body.theme-genshin h1,
+    body.theme-genshin h2,
+    body.theme-genshin h3,
+    body.theme-genshin .section-banner,
+    body.theme-genshin .modal-title {
+      font-family: 'Cinzel', Georgia, serif;
+      letter-spacing: 1px;
+    }
+
+    /* =========================================
+       CODEX NAVIGATION & SWITCHER HUD
+       ========================================= */
+    .codex-intro {
+      margin-bottom: 2rem;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: rgba(15, 19, 34, 0.8);
+      border: 1px solid var(--border-hud);
+      color: var(--text-muted);
+      padding: 0.8rem 1.8rem;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transition: all 0.25s ease;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+
+    body.theme-genshin .tab-btn {
+      clip-path: none;
+      border-radius: 4px;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+    }
+
+    .tab-btn:hover {
+      color: #FFF;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .tab-btn.active[data-filter="hsr"] {
+      background: rgba(0, 229, 255, 0.15);
+      color: var(--hsr-color);
+      border-color: var(--hsr-color);
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+    }
+
+    .tab-btn.active[data-filter="genshin"] {
+      background: rgba(232, 194, 82, 0.18);
+      color: var(--genshin-gold);
+      border-color: var(--genshin-gold);
+      box-shadow: 0 0 20px rgba(232, 194, 82, 0.25);
+    }
+
+    /* =========================================
+       SECTION HEADINGS / BANNERS
+       ========================================= */
+    .section-banner {
+      padding: 1.1rem 1.75rem;
+      margin: 1.5rem 0 2rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid transparent;
+    }
+
+    .banner-hsr {
+      background: linear-gradient(90deg, rgba(93, 63, 211, 0.35) 0%, rgba(0, 229, 255, 0.12) 100%);
+      border-left: 6px solid var(--hsr-color);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: var(--hsr-color);
+      clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    }
+
+    .banner-genshin {
+      background: linear-gradient(90deg, rgba(232, 194, 82, 0.22) 0%, rgba(17, 24, 39, 0.8) 100%);
+      border: 1px solid rgba(232, 194, 82, 0.4);
+      border-left: 6px solid var(--genshin-gold);
+      color: var(--genshin-gold);
+      border-radius: 4px;
+      box-shadow: inset 0 0 20px rgba(232, 194, 82, 0.08);
+    }
+
+    .codex-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.75rem;
+      margin-bottom: 4rem;
+    }
+
+    /* =========================================
+       HSR CARDS
+       ========================================= */
+    .card-hsr {
+      background: rgba(11, 16, 30, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      padding: 1.85rem;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+      clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card-hsr:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0, 229, 255, 0.15);
+    }
+
+    .card-hsr:focus-visible {
+      outline: 2px solid var(--hsr-color);
+      outline-offset: 3px;
+    }
+
+    /* =========================================
+       GENSHIN CARDS
+       ========================================= */
+    .card-genshin {
+      background: linear-gradient(145deg, rgba(18, 22, 33, 0.95), rgba(11, 14, 21, 0.98));
+      border: 1px solid rgba(232, 194, 82, 0.25);
+      border-radius: 6px;
+      padding: 1.85rem;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-genshin::before {
+      content: "✦";
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      color: rgba(232, 194, 82, 0.4);
+      font-size: 0.8rem;
+    }
+
+    .card-genshin:hover {
+      transform: translateY(-6px);
+      border-color: var(--genshin-gold);
+      box-shadow: 0 12px 30px rgba(232, 194, 82, 0.18);
+    }
+
+    .card-genshin:focus-visible {
+      outline: 2px solid var(--genshin-gold);
+      outline-offset: 3px;
+    }
+
+    /* Card Details */
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .card-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card-subtitle {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .card-figures-preview {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .figure-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 3px 8px;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.4rem;
+      flex-grow: 1;
+    }
+
+    .click-prompt {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* HSR Path Colors */
+    .path-destruction { border-left: 5px solid #FF5A5A; }
+    .path-destruction .card-title, .path-destruction .click-prompt { color: #FF5A5A; }
+    .path-destruction .card-badge { background: rgba(255, 90, 90, 0.15); color: #FF5A5A; }
+
+    .path-hunt { border-left: 5px solid #00F0FF; }
+    .path-hunt .card-title, .path-hunt .click-prompt { color: #00F0FF; }
+    .path-hunt .card-badge { background: rgba(0, 240, 255, 0.15); color: #00F0FF; }
+
+    .path-erudition { border-left: 5px solid #9B7BFF; }
+    .path-erudition .card-title, .path-erudition .click-prompt { color: #9B7BFF; }
+    .path-erudition .card-badge { background: rgba(155, 123, 255, 0.15); color: #9B7BFF; }
+
+    .path-harmony { border-left: 5px solid #FFB834; }
+    .path-harmony .card-title, .path-harmony .click-prompt { color: #FFB834; }
+    .path-harmony .card-badge { background: rgba(255, 184, 52, 0.15); color: #FFB834; }
+
+    .path-nihility { border-left: 5px solid #C056FF; }
+    .path-nihility .card-title, .path-nihility .click-prompt { color: #C056FF; }
+    .path-nihility .card-badge { background: rgba(192, 86, 255, 0.15); color: #C056FF; }
+
+    .path-preservation { border-left: 5px solid #4D94FF; }
+    .path-preservation .card-title, .path-preservation .click-prompt { color: #4D94FF; }
+    .path-preservation .card-badge { background: rgba(77, 148, 255, 0.15); color: #4D94FF; }
+
+    .path-abundance { border-left: 5px solid #38EF7D; }
+    .path-abundance .card-title, .path-abundance .click-prompt { color: #38EF7D; }
+    .path-abundance .card-badge { background: rgba(56, 239, 125, 0.15); color: #38EF7D; }
+
+    /* Genshin Colors */
+    .elem-pyro { border-left: 5px solid #FF5232; }
+    .elem-pyro .card-title, .elem-pyro .click-prompt { color: #FF5232; }
+    .elem-pyro .card-badge { background: rgba(255, 82, 50, 0.15); color: #FF5232; }
+
+    .elem-hydro { border-left: 5px solid #29C6FF; }
+    .elem-hydro .card-title, .elem-hydro .click-prompt { color: #29C6FF; }
+    .elem-hydro .card-badge { background: rgba(41, 198, 255, 0.15); color: #29C6FF; }
+
+    .elem-anemo { border-left: 5px solid #5CE8B5; }
+    .elem-anemo .card-title, .elem-anemo .click-prompt { color: #5CE8B5; }
+    .elem-anemo .card-badge { background: rgba(92, 232, 181, 0.15); color: #5CE8B5; }
+
+    .elem-electro { border-left: 5px solid #CE7BFF; }
+    .elem-electro .card-title, .elem-electro .click-prompt { color: #CE7BFF; }
+    .elem-electro .card-badge { background: rgba(206, 123, 255, 0.15); color: #CE7BFF; }
+
+    .elem-dendro { border-left: 5px solid #A8DB32; }
+    .elem-dendro .card-title, .elem-dendro .click-prompt { color: #A8DB32; }
+    .elem-dendro .card-badge { background: rgba(168, 219, 50, 0.15); color: #A8DB32; }
+
+    .elem-cryo { border-left: 5px solid #A2EEFF; }
+    .elem-cryo .card-title, .elem-cryo .click-prompt { color: #A2EEFF; }
+    .elem-cryo .card-badge { background: rgba(162, 238, 255, 0.15); color: #A2EEFF; }
+
+    .elem-geo { border-left: 5px solid #F0B33A; }
+    .elem-geo .card-title, .elem-geo .click-prompt { color: #F0B33A; }
+    .elem-geo .card-badge { background: rgba(240, 179, 58, 0.15); color: #F0B33A; }
+
+    /* Modal Layout */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 12, 0.85);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 1000;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.5rem;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+      animation: modalFadeIn 0.25s ease-out;
+    }
+
+    .modal-hsr {
+      background: #0B1020;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    }
+
+    .modal-genshin {
+      background: linear-gradient(145deg, #151924, #0D1018);
+      border: 1px solid rgba(232, 194, 82, 0.4);
+      border-radius: 6px;
+      box-shadow: inset 0 0 30px rgba(232, 194, 82, 0.05), 0 25px 60px rgba(0, 0, 0, 0.85);
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(15px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #FFF;
+    }
+
+    .modal-type-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+    }
+
+    .modal-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-motto {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.75rem;
+      border-left: 2px solid rgba(255, 255, 255, 0.2);
+      padding-left: 0.75rem;
+    }
+
+    .figures-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .figure-block h3 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .figure-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .figure-role {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .modal-desc-heading {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .modal-desc-body {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-footer-tag {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 550px) {
+      .figures-grid {
+        grid-template-columns: 1fr;
+      }
+      .modal-content {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="theme-hsr">
+
+  <!-- TOP HUD BAR WITH LOCAL IMAGE MENU TILES -->
+  <header>
+    <div class="brand-wrapper">
+      <div class="brand-badge" id="hudBadge">HSR // ASTRAL</div>
+      <div class="brand-title">Hoyo<span>Match</span></div>
+    </div>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="index.html">
+            <img class="nav-thumb" src="images/nav-home.png" alt="" aria-hidden="true">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 01</span>
+              <span class="nav-name">Command</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="quiz.html">
+            <img class="nav-thumb" src="images/nav-quiz.png" alt="" aria-hidden="true">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 02</span>
+              <span class="nav-name">Assessment</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="codex.html" class="active">
+            <img class="nav-thumb" src="images/nav-roster.png" alt="" aria-hidden="true">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 03</span>
+              <span class="nav-name">Codex</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="feedback.html">
+            <img class="nav-thumb" src="images/nav-feedback.png" alt="" aria-hidden="true">
+            <div class="nav-label">
+              <span class="nav-tag">Nav 04</span>
+              <span class="nav-name">Terminal Log</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-viewport">
+    
+    <div class="codex-intro">
+      <h1 class="section-headline" id="mainHeadline">Cosmic Paths &amp; Elemental Resonance</h1>
+      <p id="mainSubtitle" style="color: var(--text-muted); font-size: 0.95rem;">
+        Switch operational sectors below to re-calibrate the database environment. Click any card to inspect governing authorities, champions, and combat doctrines.
+      </p>
+    </div>
+
+    <!-- SECTOR THEME SELECTOR -->
+    <div class="filter-tabs" role="tablist" aria-label="Game Sector Switcher">
+      <button class="tab-btn active" id="tab-hsr" data-filter="hsr" role="tab" aria-selected="true" aria-controls="section-hsr">
+        ✦ Honkai: Star Rail (Astral Paths)
+      </button>
+      <button class="tab-btn" id="tab-genshin" data-filter="genshin" role="tab" aria-selected="false" aria-controls="section-genshin">
+        ❖ Genshin Impact (Teyvat Elements)
+      </button>
+    </div>
+
+    <!-- =========================================
+         HSR SECTION (COSMIC SPACE THEME)
+         ========================================= -->
+    <section id="section-hsr" role="tabpanel" aria-labelledby="tab-hsr">
+      <h2 class="section-banner banner-hsr">
+        <span>Astral Sector &bull; The 7 Cosmic Paths</span>
+        <span style="font-size: 0.8rem;">ASTRAL EXPRESS ARCHIVE</span>
+      </h2>
+
+      <div class="codex-grid">
+
+        <!-- Destruction -->
+        <article class="card-hsr path-destruction" data-id="hsr-destruction" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">The Destruction</h3>
+            <span class="card-badge">All-Rounder</span>
+          </div>
+          <div class="card-subtitle">"Born from conflict, tempered in survival."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Aeon: Nanook</span>
+            <span class="figure-tag">Emanator: Phantylia</span>
+          </div>
+          <p class="card-desc">Blends high durability with escalating burst firepower. Converts battle adversity into unstoppable frontline offensive power.</p>
+          <div class="click-prompt">Inspect Path Dossier &rarr;</div>
+        </article>
+
+        <!-- The Hunt -->
+        <article class="card-hsr path-hunt" data-id="hsr-hunt" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">The Hunt</h3>
+            <span class="card-badge">Single Target</span>
+          </div>
+          <div class="card-subtitle">"Decisive strike, uncompromising precision."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Aeon: Lan</span>
+            <span class="figure-tag">Emanator: Feixiao</span>
+          </div>
+          <p class="card-desc">Relentless pursuit and unmatched velocity. Dominates turn orders to deliver critical single-target elimination.</p>
+          <div class="click-prompt">Inspect Path Dossier &rarr;</div>
+        </article>
+
+        <!-- Erudition -->
+        <article class="card-hsr path-erudition" data-id="hsr-erudition" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">The Erudition</h3>
+            <span class="card-badge">Multi-Target</span>
+          </div>
+          <div class="card-subtitle">"Answers exist for those who calculate."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Aeon: Nous</span>
+            <span class="figure-tag">Emanator: Madam Herta</span>
+          </div>
+          <p class="card-desc">Masters of logic and crowd management. Decimates broad tactical encounters through calculated multi-target sweeps.</p>
+          <div class="click-prompt">Inspect Path Dossier &rarr;</div>
+        </article>
+
+        <!-- Harmony -->
+        <article class="card-hsr path-harmony" data-id="hsr-harmony" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">The Harmony</h3>
+            <span class="card-badge">Buffer / Support</span>
+          </div>
+          <div class="card-subtitle">"Unity amplifies every individual voice."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Aeon: Xipe</span>
+            <span class="figure-tag">Emanator: Robin</span>
+          </div>
+          <p class="card-desc">Coordinates squad synergy by accelerating action turns, enhancing critical stats, and uniting allies into a cohesive force.</p>
+          <div class="click-prompt">Inspect Path Dossier &rarr;</div>
+        </article>
+
+        <!-- Nihility -->
+        <article class="card-hsr path-nihility" data-id="hsr-nihility" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">The Nihility</h3>
+            <span class="card-badge">Debuff / DoT</span>
+          </div>
+          <div class="card-subtitle">"All things erode under patient observation."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Aeon: IX</span>
+            <span class="figure-tag">Emanator: Acheron</span>
+          </div>
+          <p class="card-desc">Subversion and relentless attrition. Weakens hostiles with devastating debuffs, defense shreds, and continuous damage over time.</p>
+          <div class="click-prompt">Inspect Path Dossier &rarr;</div>
+        </article>
+
+        <!-- Preservation -->
+        <article class="card-hsr path-preservation" data-id="hsr-preservation" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">The Preservation</h3>
+            <span class="card-badge">Defense / Barrier</span>
+          </div>
+          <div class="card-subtitle">"The bulwark stands when all else falls."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Aeon: Qlipoth</span>
+            <span class="figure-tag">Emanator: Diamond</span>
+          </div>
+          <p class="card-desc">Impenetrable fortifications against cosmic hazards. Shields allies from lethal burst strikes and anchors team survivability.</p>
+          <div class="click-prompt">Inspect Path Dossier &rarr;</div>
+        </article>
+
+        <!-- Abundance -->
+        <article class="card-hsr path-abundance" data-id="hsr-abundance" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">The Abundance</h3>
+            <span class="card-badge">Healing / Sustain</span>
+          </div>
+          <div class="card-subtitle">"Life persists, restorative and unbroken."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Aeon: Yaoshi</span>
+            <span class="figure-tag">Emanator: Shuhu</span>
+          </div>
+          <p class="card-desc">Boundless renewal and recovery. Restores health, cleanses crippling debuffs, and sustains enduring frontline vitality.</p>
+          <div class="click-prompt">Inspect Path Dossier &rarr;</div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =========================================
+         GENSHIN SECTION (FANTASY TEYVAT THEME)
+         ========================================= -->
+    <section id="section-genshin" role="tabpanel" aria-labelledby="tab-genshin" hidden>
+      <h2 class="section-banner banner-genshin">
+        <span>Teyvat Sanctuary &bull; The 7 Elemental Resonances</span>
+        <span style="font-size: 0.8rem;">CELESTIA SANCTIONED</span>
+      </h2>
+
+      <div class="codex-grid">
+
+        <!-- Pyro -->
+        <article class="card-genshin elem-pyro" data-id="gi-pyro" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">Pyro</h3>
+            <span class="card-badge">Fire / Natlan</span>
+          </div>
+          <div class="card-subtitle">"A burning flame ignited by conviction."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Archon: Mavuika</span>
+            <span class="figure-tag">Master: Hu Tao</span>
+          </div>
+          <p class="card-desc">Embraces zeal, warfare, and unyielding passion. Triggers devastating Vaporize and Melt damage spikes when met with water or frost.</p>
+          <div class="click-prompt">Inspect Element Dossier &rarr;</div>
+        </article>
+
+        <!-- Hydro -->
+        <article class="card-genshin elem-hydro" data-id="gi-hydro" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">Hydro</h3>
+            <span class="card-badge">Water / Fontaine</span>
+          </div>
+          <div class="card-subtitle">"Fluid form, unwavering pursuit of justice."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Authority: Neuvillette</span>
+            <span class="figure-tag">Master: Yelan</span>
+          </div>
+          <p class="card-desc">Adaptability and restorative grace. Acts as the universal catalyst for elemental chemistry, triggering Bloom, Electro-Charged, and Freeze.</p>
+          <div class="click-prompt">Inspect Element Dossier &rarr;</div>
+        </article>
+
+        <!-- Anemo -->
+        <article class="card-genshin elem-anemo" data-id="gi-anemo" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">Anemo</h3>
+            <span class="card-badge">Wind / Mondstadt</span>
+          </div>
+          <div class="card-subtitle">"Unbound as the wandering wind."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Archon: Barbatos (Venti)</span>
+            <span class="figure-tag">Master: Kazuha</span>
+          </div>
+          <p class="card-desc">Liberty, crowd displacement, and resonance. Swirls other reactive elements to shred enemy resistances and pull scattered foes together.</p>
+          <div class="click-prompt">Inspect Element Dossier &rarr;</div>
+        </article>
+
+        <!-- Electro -->
+        <article class="card-genshin elem-electro" data-id="gi-electro" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">Electro</h3>
+            <span class="card-badge">Lightning / Inazuma</span>
+          </div>
+          <div class="card-subtitle">"Fleeting sparks chasing timeless ideals."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Archon: Raiden Shogun</span>
+            <span class="figure-tag">Master: Yae Miko</span>
+          </div>
+          <p class="card-desc">Rapid cadence and energy replenishment. Powers Aggravate, Hyperbloom, and Superconduct with fierce lightning discharge.</p>
+          <div class="click-prompt">Inspect Element Dossier &rarr;</div>
+        </article>
+
+        <!-- Dendro -->
+        <article class="card-genshin elem-dendro" data-id="gi-dendro" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">Dendro</h3>
+            <span class="card-badge">Flora / Sumeru</span>
+          </div>
+          <div class="card-subtitle">"Seeds of curiosity grow into forests of insight."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Archon: Buer (Nahida)</span>
+            <span class="figure-tag">Master: Alhaitham</span>
+          </div>
+          <p class="card-desc">Organic complexity, wisdom, and life cycles. Catalyzes powerful botanical reactions: Quicken, Spread, and explosive Dendro Cores.</p>
+          <div class="click-prompt">Inspect Element Dossier &rarr;</div>
+        </article>
+
+        <!-- Cryo -->
+        <article class="card-genshin elem-cryo" data-id="gi-cryo" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">Cryo</h3>
+            <span class="card-badge">Frost / Snezhnaya</span>
+          </div>
+          <div class="card-subtitle">"Unwavering exterior concealing profound warmth."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Archon: Tsaritsa</span>
+            <span class="figure-tag">Master: Ayaka</span>
+          </div>
+          <p class="card-desc">Composure and absolute containment. Freezes foes in place with Hydro and executes high-damage reverse-Melt combos with Pyro.</p>
+          <div class="click-prompt">Inspect Element Dossier &rarr;</div>
+        </article>
+
+        <!-- Geo -->
+        <article class="card-genshin elem-geo" data-id="gi-geo" tabindex="0">
+          <div class="card-top">
+            <h3 class="card-title">Geo</h3>
+            <span class="card-badge">Earth / Liyue</span>
+          </div>
+          <div class="card-subtitle">"Grounded resolve that outlasts the tides."</div>
+          <div class="card-figures-preview">
+            <span class="figure-tag">Archon: Morax (Zhongli)</span>
+            <span class="figure-tag">Master: Navia</span>
+          </div>
+          <p class="card-desc">Enduring fortitude, constructs, and crystallize shields. Delivers impenetrable defensive posture and heavy blunt impact.</p>
+          <div class="click-prompt">Inspect Element Dossier &rarr;</div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- INTERACTIVE DOSSIER MODAL OVERLAY -->
+  <div class="modal-overlay" id="dossierModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content modal-hsr" id="modalBox">
+      <button class="modal-close" id="modalClose" aria-label="Close dialog">&times;</button>
+      <div class="modal-type-tag" id="modalTag">SECTOR DOSSIER</div>
+      <h2 class="modal-title" id="modalTitle">Path Title</h2>
+      <div class="modal-motto" id="modalMotto">"Philosophy motto..."</div>
+      
+      <!-- Key Figures Block -->
+      <div class="figures-grid">
+        <div class="figure-block">
+          <h3 id="figure1Label">Governing Authority</h3>
+          <div class="figure-name" id="figure1Name">Name</div>
+          <div class="figure-role" id="figure1Role">Title</div>
+        </div>
+        <div class="figure-block">
+          <h3 id="figure2Label">Notable Champion</h3>
+          <div class="figure-name" id="figure2Name">Name</div>
+          <div class="figure-role" id="figure2Role">Title</div>
+        </div>
+      </div>
+
+      <!-- Tactical Lore Overview -->
+      <div class="modal-desc-heading">Tactical &amp; Philosophical Doctrine</div>
+      <p class="modal-desc-body" id="modalBody">Full detailed breakdown...</p>
+
+      <div class="modal-footer-tag">
+        <button class="btn-tactical" id="modalOkBtn" type="button" style="padding: 0.6rem 1.4rem; font-size: 0.75rem;">Close Dossier</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 HoyoMatch &bull; Neural Calibration Project</p>
+  </footer>
+
+  <!-- SCRIPT FOR SWITCHING THEMES & MODAL HANDLING -->
+  <script>
+    const codexData = {
+      'hsr-destruction': {
+        game: 'hsr',
+        title: 'The Destruction',
+        tag: 'HSR Astral Path // Entropy',
+        motto: '"Born from conflict, sustained by survival, ending in universal entropy."',
+        fig1Label: 'Governing Aeon',
+        fig1Name: 'Nanook',
+        fig1Role: 'The Aeon of Destruction',
+        fig2Label: 'Leading Emanator',
+        fig2Name: 'Phantylia / Zephyro',
+        fig2Role: 'Lord Ravager of the Antimatter Legion',
+        body: 'The Path of Destruction represents the inevitability of decay and the fierce vitality that burns only in life-or-death struggle. Walkers of this Path are formidable all-rounders: they withstand crushing punishment, thrive at low health thresholds, and convert sacrifice into unstoppable offensive strikes.',
+        color: '#FF5A5A'
+      },
+      'hsr-hunt': {
+        game: 'hsr',
+        title: 'The Hunt',
+        tag: 'HSR Astral Path // Velocity',
+        motto: '"Uncompromising determination. The arrow never looks back."',
+        fig1Label: 'Governing Aeon',
+        fig1Name: 'Lan',
+        fig1Role: 'The Reignbow Arbiter',
+        fig2Label: 'Leading Emanator',
+        fig2Name: 'Feixiao',
+        fig2Role: "Merlin's Claw & Xianzhou General",
+        body: 'The Path of The Hunt honors singular focus, velocity, and decisive vengeance. Its champions dedicate themselves completely to hunting down planetary threats. In combat, Hunt operatives dominate turn orders, capitalizing on critical hits, speed buffs, and immediate single-target annihilation.',
+        color: '#00F0FF'
+      },
+      'hsr-erudition': {
+        game: 'hsr',
+        title: 'The Erudition',
+        tag: 'HSR Astral Path // Intellect',
+        motto: '"All mysteries in the cosmos will yield to calculation."',
+        fig1Label: 'Governing Aeon',
+        fig1Name: 'Nous',
+        fig1Role: 'The Astral Supercomputer',
+        fig2Label: 'Leading Emanator',
+        fig2Name: 'Madam Herta',
+        fig2Role: 'Genius Society Member #83',
+        body: 'Nous transformed from an organic machine into an Aeon seeking to calculate the universe\'s ultimate equation. Erudition pathstriders look past chaotic skirmishes to solve multi-variable engagements, raining calculated area-of-effect damage across entire waves of hostiles.',
+        color: '#9B7BFF'
+      },
+      'hsr-harmony': {
+        game: 'hsr',
+        title: 'The Harmony',
+        tag: 'HSR Astral Path // Resonance',
+        motto: '"Every note finds its rightful place in the cosmic chord."',
+        fig1Label: 'Governing Aeon',
+        fig1Name: 'Xipe',
+        fig1Role: 'The Thousand-Faced Harmony',
+        fig2Label: 'Leading Emanator',
+        fig2Name: 'Robin / Sunday',
+        fig2Role: 'The Family of Penacony',
+        body: 'The Harmony teaches that pure strength exists only when separate wills intertwine. Walkers of this Path do not seek individual glory; instead, they act as the conductors of battle, providing attack surges, energy regeneration, and instant turn advances to their vanguard.',
+        color: '#FFB834'
+      },
+      'hsr-nihility': {
+        game: 'hsr',
+        title: 'The Nihility',
+        tag: 'HSR Astral Path // Void',
+        motto: '"Meaning is a construct; existence erodes in silence."',
+        fig1Label: 'Governing Aeon',
+        fig1Name: 'IX',
+        fig1Role: 'The Void & Dark Sun',
+        fig2Label: 'Leading Emanator',
+        fig2Name: 'Acheron',
+        fig2Role: 'Self-Annihilator & Galaxy Ranger',
+        body: 'Nihility acknowledges the cosmic void. Rather than forcing confrontation, Nihility specialists erode enemy defenses through attrition. They reduce armor, sap offensive power, and inflict lingering damage over time that tears away resistance without engaging in direct slugfests.',
+        color: '#C056FF'
+      },
+      'hsr-preservation': {
+        game: 'hsr',
+        title: 'The Preservation',
+        tag: 'HSR Astral Path // Fortitude',
+        motto: '"A wall against the darkness. The foundation will endure."',
+        fig1Label: 'Governing Aeon',
+        fig1Name: 'Qlipoth',
+        fig1Role: 'The Subspace Wall Builder',
+        fig2Label: 'Leading Emanator',
+        fig2Name: 'Diamond',
+        fig2Role: 'Head of the IPC Strategic Investment Dept',
+        body: 'Qlipoth spends eons erecting cosmic crystal walls to shield worlds from impending cataclysm. Preservation specialists act as the impenetrable shield of any expedition, shielding allies from incoming bursts and deflecting hostility with steadfast resolve.',
+        color: '#4D94FF'
+      },
+      'hsr-abundance': {
+        game: 'hsr',
+        title: 'The Abundance',
+        tag: 'HSR Astral Path // Vitality',
+        motto: '"Life is an eternal, unyielding bloom."',
+        fig1Label: 'Governing Aeon',
+        fig1Name: 'Yaoshi',
+        fig1Role: 'The Merciful Medicine Maker',
+        fig2Label: 'Leading Emanator',
+        fig2Name: 'Shuhu',
+        fig2Role: 'The Undying Arbiter of the Denizens',
+        body: 'Yaoshi bestows boundless rejuvenation and cellular restoration to all living creatures. Abundance pathstriders cleanse lethal status conditions, restore depleted squad reserves, and ensure that weariness never halts the battle line.',
+        color: '#38EF7D'
+      },
+
+      // Genshin Elements
+      'gi-pyro': {
+        game: 'genshin',
+        title: 'Pyro (Fire)',
+        tag: 'Genshin Element // Natlan',
+        motto: '"A blazing oath of bravery, honor, and raw drive."',
+        fig1Label: 'Governing Archon',
+        fig1Name: 'Mavuika / Haborym',
+        fig1Role: 'Archon of War (Natlan)',
+        fig2Label: 'Master Vision Bearer',
+        fig2Name: 'Hu Tao / Bennett',
+        fig2Role: 'Wangsheng Parlor Director',
+        body: 'Pyro represents the heart that refuses to go cold. It is granted to individuals with burning passions, uncompromising dreams, or a warrior\'s resolve. In elemental combat, Pyro acts as the primary offensive trigger, unleashing critical Vaporize and Melt reaction damage.',
+        color: '#FF5232'
+      },
+      'gi-hydro': {
+        game: 'genshin',
+        title: 'Hydro (Water)',
+        tag: 'Genshin Element // Fontaine',
+        motto: '"Water takes every shape, yet its pursuit of justice never bends."',
+        fig1Label: 'Governing Authority',
+        fig1Name: 'Neuvillette',
+        fig1Role: 'Hydro Sovereign / Chief Justice',
+        fig2Label: 'Master Vision Bearer',
+        fig2Name: 'Yelan',
+        fig2Role: 'Special Intelligence Operative',
+        body: 'Hydro is the element of truth, moral conviction, and pure adaptability. It flows effortlessly between soothing restorative aid and high-pressure cutting jets. Hydro serves as the universal chemical backbone of Teyvat\'s elemental reaction systems.',
+        color: '#29C6FF'
+      },
+      'gi-anemo': {
+        game: 'genshin',
+        title: 'Anemo (Wind)',
+        tag: 'Genshin Element // Mondstadt',
+        motto: '"Let the wind guide you along paths without borders."',
+        fig1Label: 'Governing Archon',
+        fig1Name: 'Barbatos (Venti)',
+        fig1Role: 'God of Freedom (Mondstadt)',
+        fig2Label: 'Master Vision Bearer',
+        fig2Name: 'Kaedehara Kazuha',
+        fig2Role: 'Wandering Samurai of the Crux Fleet',
+        body: 'Anemo embodies personal liberty, release from dogma, and quiet sacrifice. Anemo Vision bearers are masters of kinetic displacement: they pull scattered enemies into vortexes and Swirl neighboring elements to shred enemy resistances.',
+        color: '#5CE8B5'
+      },
+      'gi-electro': {
+        game: 'genshin',
+        title: 'Electro (Lightning)',
+        tag: 'Genshin Element // Inazuma',
+        motto: '"A fleeting lightning flash that carves out eternity."',
+        fig1Label: 'Governing Archon',
+        fig1Name: 'Raiden Shogun (Ei)',
+        fig1Role: 'God of Eternity (Inazuma)',
+        fig2Label: 'Master Vision Bearer',
+        fig2Name: 'Yae Miko / Clorinde',
+        fig2Role: 'Grand Guuji of the Narukami Shrine',
+        body: 'Electro reflects intensity, fierce independence, and the pursuit of timeless truth in a fleeting world. In battle, Electro crackles with high energy recharge rates and acts as the catalyst for Aggravate, Superconduct, and Hyperbloom reactions.',
+        color: '#CE7BFF'
+      },
+      'gi-dendro': {
+        game: 'genshin',
+        title: 'Dendro (Flora)',
+        tag: 'Genshin Element // Sumeru',
+        motto: '"Wisdom is not what is hoarded, but what takes root."',
+        fig1Label: 'Governing Archon',
+        fig1Name: 'Lesser Lord Kusanali (Nahida)',
+        fig1Role: 'God of Wisdom (Sumeru)',
+        fig2Label: 'Master Vision Bearer',
+        fig2Name: 'Alhaitham',
+        fig2Role: 'Scribe of the Sumeru Akademiya',
+        body: 'Dendro embodies study, curiosity, and the organic web that connects all living matter. Dendro interactions form complex reaction chains (Bloom, Hyperbloom, Burgeon, and Quicken), fundamentally reshaping battlefield control.',
+        color: '#A8DB32'
+      },
+      'gi-cryo': {
+        game: 'genshin',
+        title: 'Cryo (Frost)',
+        tag: 'Genshin Element // Snezhnaya',
+        motto: '"An icy frost protecting an undying inner warmth."',
+        fig1Label: 'Governing Archon',
+        fig1Name: 'The Tsaritsa',
+        fig1Role: 'Cryo Archon & Ruler of Snezhnaya',
+        fig2Label: 'Master Vision Bearer',
+        fig2Name: 'Kamisato Ayaka',
+        fig2Role: 'Shirasagi Himegimi of the Yashiro Commission',
+        body: 'Cryo is bestowed upon those caught between duty and desire, carrying heavy burdens behind a disciplined, unyielding exterior. On the battlefield, Cryo delivers severe crowd control by freezing moist enemies and setting up lethal reverse-Melt explosions.',
+        color: '#A2EEFF'
+      },
+      'gi-geo': {
+        game: 'genshin',
+        title: 'Geo (Earth)',
+        tag: 'Genshin Element // Liyue',
+        motto: '"A contract forged in stone will outlast the ages."',
+        fig1Label: 'Governing Archon',
+        fig1Name: 'Rex Lapis / Morax (Zhongli)',
+        fig1Role: 'God of Contracts (Liyue)',
+        fig2Label: 'Master Vision Bearer',
+        fig2Name: 'Navia / Albedo',
+        fig2Role: 'President of the Spina di Rosula',
+        body: 'Geo represents unshakeable integrity, contracts, and timeless fortitude. It does not swirl or melt; rather, it manifests physical constructs, impenetrable crystalline barriers, and overwhelming blunt impact that shatters enemy poise.',
+        color: '#F0B33A'
+      }
+    };
+
+    const body = document.body;
+    const tabs = document.querySelectorAll('.tab-btn');
+    const secHsr = document.getElementById('section-hsr');
+    const secGenshin = document.getElementById('section-genshin');
+    const hudBadge = document.getElementById('hudBadge');
+    const headline = document.getElementById('mainHeadline');
+
+    function switchGameTheme(game) {
+      tabs.forEach(t => {
+        const isMatch = t.dataset.filter === game;
+        t.classList.toggle('active', isMatch);
+        t.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      });
+
+      if (game === 'hsr') {
+        body.classList.remove('theme-genshin');
+        body.classList.add('theme-hsr');
+        secHsr.removeAttribute('hidden');
+        secGenshin.setAttribute('hidden', '');
+        hudBadge.innerText = 'HSR // ASTRAL';
+        hudBadge.style.background = 'var(--hsr-color)';
+        hudBadge.style.color = '#000';
+        headline.innerText = 'Astral Paths & Aeon Doctrines';
+      } else if (game === 'genshin') {
+        body.classList.remove('theme-hsr');
+        body.classList.add('theme-genshin');
+        secHsr.setAttribute('hidden', '');
+        secGenshin.removeAttribute('hidden');
+        hudBadge.innerText = 'TEYVAT // CELESTIA';
+        hudBadge.style.background = 'var(--genshin-gold)';
+        hudBadge.style.color = '#000';
+        headline.innerText = 'Teyvat Elemental Sanctuary';
+      }
+    }
+
+    tabs.forEach(t => {
+      t.addEventListener('click', () => switchGameTheme(t.dataset.filter));
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameParam = urlParams.get('game');
+    if (gameParam === 'genshin') {
+      switchGameTheme('genshin');
+    } else {
+      switchGameTheme('hsr');
+    }
+
+    const modal = document.getElementById('dossierModal');
+    const modalBox = document.getElementById('modalBox');
+    const closeBtn = document.getElementById('modalClose');
+    const okBtn = document.getElementById('modalOkBtn');
+    let lastActiveElement = null;
+
+    function openDossier(id) {
+      const data = codexData[id];
+      if (!data) return;
+
+      lastActiveElement = document.activeElement;
+
+      if (data.game === 'hsr') {
+        modalBox.className = 'modal-content modal-hsr';
+      } else {
+        modalBox.className = 'modal-content modal-genshin';
+      }
+
+      document.getElementById('modalTag').innerText = data.tag;
+      document.getElementById('modalTag').style.color = data.color;
+      document.getElementById('modalTitle').innerText = data.title;
+      document.getElementById('modalTitle').style.color = data.color;
+      document.getElementById('modalMotto').innerText = data.motto;
+
+      document.getElementById('figure1Label').innerText = data.fig1Label;
+      document.getElementById('figure1Name').innerText = data.fig1Name;
+      document.getElementById('figure1Role').innerText = data.fig1Role;
+
+      document.getElementById('figure2Label').innerText = data.fig2Label;
+      document.getElementById('figure2Name').innerText = data.fig2Name;
+      document.getElementById('figure2Role').innerText = data.fig2Role;
+
+      document.getElementById('modalBody').innerText = data.body;
+
+      modalBox.style.borderLeft = `6px solid ${data.color}`;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastActiveElement) {
+        lastActiveElement.focus();
+      }
+    }
+
+    document.querySelectorAll('.card-hsr, .card-genshin').forEach(card => {
+      card.addEventListener('click', () => {
+        openDossier(card.dataset.id);
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openDossier(card.dataset.id);
+        }
+      });
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    okBtn.addEventListener('click', closeModal);
+
+    modalBox.addEventListener('click', (e) => e.stopPropagation());
+    modal.addEventListener('click', closeModal);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) {
+        closeModal();
+      }
+    });
+  </script>
+
+</body>
+</html>
